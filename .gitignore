@@ -1,0 +1,6 @@
+# Outils de développement (inutiles pour le site en ligne)
+_tools/
+_shots/
+node_modules/
+package.json
+package-lock.json
