@@ -34,21 +34,73 @@
     });
   }
 
-  /* ---- Scroll reveal ---- */
-  var revealEls = document.querySelectorAll(".reveal, .reveal-img");
-  if (revealEls.length) {
+  /* ---- Scroll reveal ----
+     - n'anime que opacity + transform (fluide, géré par le GPU)
+     - attend que l'image soit chargée avant de la faire apparaître
+     - filet de sécurité si IntersectionObserver rate un élément (Safari + colonnes CSS)
+     - nettoie les classes après l'animation pour rendre aux boutons leurs transitions normales */
+  var pending = Array.prototype.slice.call(document.querySelectorAll(".reveal, .reveal-img"));
+
+  var revealCleanup = function (el) {
+    var t = el.__revealTimer; if (t) clearTimeout(t);
+    el.classList.remove("reveal", "reveal-img", "is-visible");
+    el.style.removeProperty("--i");
+  };
+  var revealNow = function (el) {
+    if (el.__shown) return;
+    el.__shown = true;
+    requestAnimationFrame(function () {
+      el.classList.add("is-visible");
+      var onEnd = function (e) {
+        if (e.target !== el || e.propertyName !== "opacity") return;
+        el.removeEventListener("transitionend", onEnd);
+        revealCleanup(el);
+      };
+      el.addEventListener("transitionend", onEnd);
+      el.__revealTimer = setTimeout(function () { revealCleanup(el); }, 2200);
+    });
+  };
+  var reveal = function (el) {
+    if (el.__queued) return;
+    el.__queued = true;
+    var img = el.classList.contains("reveal-img") ? (el.tagName === "IMG" ? el : el.querySelector("img")) : null;
+    if (img && !(img.complete && img.naturalWidth)) {
+      if (img.loading === "lazy") img.loading = "eager";
+      var go = function () { revealNow(el); };
+      img.addEventListener("load", go, { once: true });
+      img.addEventListener("error", go, { once: true });
+      setTimeout(go, 2500);
+    } else {
+      revealNow(el);
+    }
+  };
+
+  if (pending.length) {
     if (reduce || !("IntersectionObserver" in window)) {
-      revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+      pending.forEach(function (el) { el.classList.add("is-visible"); });
     } else {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
-          }
+          if (entry.isIntersecting) { reveal(entry.target); io.unobserve(entry.target); }
         });
       }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
-      revealEls.forEach(function (el) { io.observe(el); });
+      pending.forEach(function (el) { io.observe(el); });
+
+      var scanTimer = null;
+      var scan = function () {
+        var vh = window.innerHeight;
+        pending = pending.filter(function (el) {
+          if (el.__queued) return false;
+          var r = el.getBoundingClientRect();
+          if (r.height && r.top < vh * 0.95 && r.bottom > 0) { reveal(el); io.unobserve(el); return false; }
+          return true;
+        });
+        if (!pending.length) { window.removeEventListener("scroll", onScan); window.removeEventListener("resize", onScan); }
+      };
+      var onScan = function () { if (scanTimer) return; scanTimer = setTimeout(function () { scanTimer = null; scan(); }, 120); };
+      window.addEventListener("scroll", onScan, { passive: true });
+      window.addEventListener("resize", onScan);
+      window.addEventListener("load", onScan);
     }
   }
 
