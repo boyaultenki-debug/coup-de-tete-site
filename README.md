@@ -30,8 +30,7 @@ Avant publication, remplacer le domaine `https://www.coup-de-tete.fr/` dans les 
 - Photos de l'intérieur du salon (`assets/img/salon/`) — sources WhatsApp 1200×1600 : des originaux en pleine résolution donneraient un rendu plus net
 - Mentions légales : exploitant, forme juridique, responsable de publication renseignés
 
-- Photo de Nadia intégrée (page « Le salon »). Source basse définition (229×255) : fournir
-  une version plus haute résolution donnera un rendu encore plus net.
+- Photo de Nadia intégrée (page « Le salon »), version haute définition (780×930) fournie en novembre 2026.
 
 ⚠️ **Reste à fournir par le client**
 1. **Mentions légales** — SIRET, e-mail de contact, **hébergeur** (dépend de l'hébergement
