@@ -13,7 +13,7 @@ Avant publication, remplacer le domaine `https://www.coup-de-tete.fr/` dans les 
 ## Pages
 - `index.html` — Accueil
 - `prestations.html` — Tarifs & prestations (carte des prix du salon)
-- `realisations.html` — Galerie (16 photos, lightbox)
+- `realisations.html` — Galerie (21 photos, lightbox)
 - `salon.html` — Le salon + la gérante + galerie « L'espace » (photos du salon)
 - `contact.html` — Contact, horaires, carte
 - `mentions-legales.html` — Mentions légales
@@ -23,7 +23,7 @@ Avant publication, remplacer le domaine `https://www.coup-de-tete.fr/` dans les 
 ✅ **Validé / intégré**
 - Horaires confirmés (Lun fermé · Mar–Jeu 9h–18h · Ven 9h–17h30 · Sam 9h–17h · Dim fermé)
 - Avis Google (note 4,8/5) confirmés par le client
-- Gérante : Nadia Taïralil (reprise du salon en 2025) — texte intégré
+- Gérante : Nadia Garcia (reprise du salon en 2025) — texte intégré
 - Produits écoresponsables sans ammoniaque / paraben / résorcine
 - Photos fournies par le salon (droits OK)
 - Tarifs affichés d'après le menu du salon (novembre 2026) — page Prestations + aperçu sur l'accueil
